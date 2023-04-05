@@ -5,7 +5,7 @@ import tkinter as tk
 from tkinter import filedialog
 import os
 import re
-from datetime import datetime
+import datetime
 import xml.dom.minidom as minidom
 
 # Functions 
@@ -164,9 +164,18 @@ def convert_to_xml(csv_file, xml):
     global warnMsg 
     
     # Start Message
-    print("Starting the script...", flush=True)
+    #print(f"Starting the script...", flush=True)
+    print(f"Starting the script....")
+    
     
     for row in csv_file.iter_rows(min_row=2, values_only=True):
+        
+        # Increase count of record to help identify errors.
+        record += 1
+
+        # Skip if row is empty
+        if not any(row):
+            continue
         
         # Set Vars
         v_series_id = str(row[0]).strip() if row[0] else None
@@ -217,6 +226,7 @@ def convert_to_xml(csv_file, xml):
                 if not v_series_id or (re.sub("\D", "", v_series_id) != str(series_id)):
                     current_ser = "BLANK CELL" if not v_series_id or (not v_attribute) else v_series_id
                     print(f"Warning: Series ID mismatch for record at Excel line: {record} - ID in Record: {current_ser}, ID expected: ser{series_id}.", flush=True)
+                
                     warnMsg = 1    
                 series_id += 1
                 
@@ -390,8 +400,8 @@ excel_file_path = filedialog.askopenfilename(initialdir=os.getcwd(), filetypes=[
 workbook = openpyxl.load_workbook(excel_file_path)
 
 # Get the desired sheet (or the first sheet if "template" doesn't exist)
-if "template" in workbook.sheetnames:
-    sheet = workbook["template"]
+if "Template" in workbook.sheetnames:
+    sheet = workbook["Template"]
 else:
     sheet = workbook.active
 
@@ -406,7 +416,11 @@ convert_to_xml(sheet, xml_doc)
 
 # Save the XML document
 filepath = os.getcwd()
-fileName = "output_file.xml"
+
+fileName = "output_file"
+file_suffix = datetime.datetime.now().strftime("%Y_%m_%d-%H%M_%S_%f")
+fileName = fileName + "-" + file_suffix + ".xml"
+
 fullpath = os.path.join(filepath, fileName)
 
 with open(fullpath, 'w') as f:
@@ -414,16 +428,16 @@ with open(fullpath, 'w') as f:
 
 
 # Stop message
-print(f"Script completed. Results written to: {fullpath}", end="", flush=True) 
-print("\033[32m") # ANSI Escape code for setting console text color to green
+#print(f"Script completed. Results written to: {fullpath}", end="", flush=True) 
+print(f"Script completed. Results written to: {fullpath}")
+
+
 
 # Pause at the end if warnings happened during run. 
 if warnMsg:
     print("Warnings occoured during run.")
     input("Press 'Enter' to exit and open the output file...")
 
-# Open Saved file in notepad
-# open saved file using notepad.exe
 
 # Open saved xml file remove the top and bottom two lines, then save it again.
 # set the file name and open the file
@@ -439,5 +453,5 @@ content = content[2:-1]
 with open(fullpath, "w") as file:
     file.writelines(content)
 
-
+# Open the file 
 os.startfile(fullpath)
