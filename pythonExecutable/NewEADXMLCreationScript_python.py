@@ -220,12 +220,22 @@ def convert_to_xml(csv_file, xml):
             # Data Checks - Errors and Warnings
             
             # Check for required information
-            if not v_attribute or not v_c0 or not v_title:
+            # If no attribute cnumber or title, stop program
+            if (not row[1] or not row[2] or not row[5]) :
                 print(f"Error: Required record information missing for record at Excel line: {record}", flush=True)
+                print(f"Missing Attribute, CNumber, or Title", flush=True)
                 print("Press 'Enter' to exit...")
                 input()
                 exit()
-                
+            if row[1].lower() not in ('series','subseries') and not row[6]:
+                print(f"Error: Required record information missing for record at Excel line: {record}", flush=True)
+                print(f"Error: Date is blank.", flush=True)
+                print("Press 'Enter' to exit...")
+                input()
+                exit()
+            
+
+
             # Checks for High C#
             if v_c0 > 6:
                 print(f"Warning: High c# - You may want to check your logic. - c# = {v_c0} at Excel line: {record}", flush=True)
