@@ -163,11 +163,13 @@ def convert_to_xml(csv_file, xml):
     series_id = 1
     prev_c_num = 0
     element_stack = []
+    global years
     global warnMsg 
     
     # Start Message
     #print(f"Starting the script...", flush=True)
     print(f"Starting the script....")
+    
     
     
     for row in csv_file.iter_rows(min_row=2, values_only=True):
@@ -187,9 +189,16 @@ def convert_to_xml(csv_file, xml):
         v_file = int(row[4]) if row[4] else None
         v_title = str(row[5]).strip() if row[5] else None
         v_date = str(row[6]).strip() if row[6] else None
+        if v_date: 
+            v_codedDate = codedDate(v_date)
         v_dspace_url = str(row[8]).strip() if row[8] else None
         
-        
+        # Add years to global list
+        if row[6]:
+            for match in re.findall(r'\b\d{4}\b', v_codedDate):
+                if match != '0000':
+                    years.append(match)
+            
         
         
         try:
@@ -326,7 +335,8 @@ def convert_to_xml(csv_file, xml):
                     unit_date.setAttribute("era", "ce")
                     unit_date.setAttribute("calendar", "gregorian")
                     #unit_date.setAttribute("normal", v_date)
-                    unit_date.setAttribute("normal", codedDate(v_date))
+                    unit_date.setAttribute("normal", v_codedDate)
+                    #unit_date.setAttribute("normal", codedDate(v_date))
                     unit_date.appendChild(xml.createTextNode(v_date))
 
                     # Append 'unitdate' to 'extref'
@@ -347,7 +357,8 @@ def convert_to_xml(csv_file, xml):
                     unit_date.setAttribute("era", "ce")
                     unit_date.setAttribute("calendar", "gregorian")
                     #unit_date.setAttribute("normal", v_date)
-                    unit_date.setAttribute("normal", codedDate(v_date))
+                    #unit_date.setAttribute("normal", codedDate(v_date))
+                    unit_date.setAttribute("normal", v_codedDate)
                     unit_date.appendChild(xml.createTextNode(v_date))
                     unittitle.appendChild(unit_date)
             
@@ -393,6 +404,7 @@ def convert_to_xml(csv_file, xml):
 
 # Vars
 warnMsg = None
+years = []
 
 # Set the current directory as the starting location for the file picker
 root = tk.Tk()
@@ -427,7 +439,24 @@ fileName = fileName + "-" + file_suffix + ".txt"
 fullpath = os.path.join(filepath, fileName)
 
 with open(fullpath, 'w') as f:
-    f.write(xml_doc.toprettyxml(indent="  "))   
+    f.write(xml_doc.toprettyxml())   
+
+
+# Fix Undated 
+undatedDaterange = 'undated="' + str(min(years)) + '/' + str(max(years)) +'"'
+
+## Load the txt file
+with open(fullpath, 'r') as f:
+    # Read the file into a list of lines
+    lines = f.readlines()
+
+# Loop through the lines and replace any occurrences of 'undated="0000/0000"' with 'undated'
+for i, line in enumerate(lines):
+    lines[i] = line.replace('normal="0000/0000"', undatedDaterange)
+
+# Write the modified lines back to the file
+with open(fullpath, 'w') as f:
+    f.writelines(lines)
 
 
 # Stop message
@@ -443,8 +472,8 @@ if warnMsg:
 
 
 # Open saved xml file remove the top and bottom two lines, then save it again.
-# set the file name and open the file
 
+# set the file name and open the file
 with open(fullpath, "r") as file:
     # read the content of the file
     content = file.readlines()
@@ -455,6 +484,7 @@ content = content[2:-1]
 # save the modified content to the same file
 with open(fullpath, "w") as file:
     file.writelines(content)
+
 
 # Open the file 
 os.startfile(fullpath)
