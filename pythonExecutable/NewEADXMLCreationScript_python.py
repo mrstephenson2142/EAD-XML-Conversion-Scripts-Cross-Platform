@@ -34,7 +34,7 @@ def codedDate(i):
     
     # Undated 
     if i == 'undated':
-        return '0000/0000'
+        return 'REPLACEMEASUNDATED'
     
     # 1 October-December, 2001
     elif re.search(r"([a-zA-Z]+).?\s*-\s*([a-zA-Z]+)\s*.?\s*(\d{4})",i):
@@ -452,7 +452,7 @@ with open(fullpath, 'r') as f:
 
 # Loop through the lines and replace any occurrences of 'undated="0000/0000"' with 'undated'
 for i, line in enumerate(lines):
-    lines[i] = line.replace('normal="0000/0000"', undatedDaterange)
+    lines[i] = line.replace('normal="REPLACEMEASUNDATED"', undatedDaterange)
 
 # Write the modified lines back to the file
 with open(fullpath, 'w') as f:
