@@ -1,6 +1,6 @@
 import openpyxl
 from openpyxl.utils import get_column_letter
-from lxml import etree
+#from lxml import etree
 import tkinter as tk
 from tkinter import filedialog
 import os
@@ -346,19 +346,22 @@ def convert_to_xml(csv_file, xml):
             if len(element_stack) == 0:
                 # If the stack is empty, add the element as a child of the root
                 rootElement.appendChild(new_element) 
+            # elif hierarchy == 1:
+            #     # If the hierarchy is 1, add the new element as a child of the root
+            #     rootElement.appendChild(new_element)
                 
-            elif hierarchy and (hierarchy < int(element_stack[-1].nodeName[1:])):
+            elif hierarchy < int(element_stack[-1].nodeName[1:]):
                 # If the hierarchy is less than the current open element, close the open element and add the new element
                 while hierarchy < int(element_stack[-1].nodeName[1:]):
                     element_stack.pop()
                     
-                element_stack[-1].appendChild(new_element)
+                element_stack[-1].parentNode.appendChild(new_element)
                 
-            elif hierarchy and (hierarchy == int(element_stack[-1].nodeName[1:])):
+            elif hierarchy == int(element_stack[-1].nodeName[1:]):
                 # If the hierarchy is equal to the current open element, add the new element as a sibling
                 # append to parent of last element in stack
                 element_stack[-1].parentNode.appendChild(new_element)
-            elif hierarchy and (hierarchy > int(element_stack[-1].nodeName[1:])):
+            else:
                 # If the hierarchy is greater than the current open element, add the new element as a child of the current open element
                 element_stack[-1].appendChild(new_element)
                 
