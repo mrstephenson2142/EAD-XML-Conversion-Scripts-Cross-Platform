@@ -1,0 +1,7 @@
+/test
+xmlOutput-*
+foo*.xml
+.venv
+/pythonExecutable/build
+/pythonExecutable/dist
+*output*
