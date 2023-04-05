@@ -8,6 +8,7 @@ import re
 import datetime
 import xml.dom.minidom as minidom
 import traceback
+import sys
 
 # Functions 
 
@@ -226,13 +227,13 @@ def convert_to_xml(csv_file, xml):
                 print(f"Missing Attribute, CNumber, or Title", flush=True)
                 print("Press 'Enter' to exit...")
                 input()
-                exit()
+                sys.exit(1)
             if row[1].lower() not in ('series','subseries') and not row[6]:
                 print(f"Error: Required record information missing for record at Excel line: {record}", flush=True)
                 print(f"Error: Date is blank.", flush=True)
                 print("Press 'Enter' to exit...")
                 input()
-                exit()
+                sys.exit(1)
             
 
 
