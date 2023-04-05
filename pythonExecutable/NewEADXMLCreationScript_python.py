@@ -7,6 +7,7 @@ import os
 import re
 import datetime
 import xml.dom.minidom as minidom
+import traceback
 
 # Functions 
 
@@ -37,6 +38,7 @@ def codedDate(i):
     
     # 1 October-December, 2001
     elif re.search(r"([a-zA-Z]+).?\s*-\s*([a-zA-Z]+)\s*.?\s*(\d{4})",i):
+        
         match = re.search(r"([a-zA-Z]+).?\s*-\s*([a-zA-Z]+)\s*.?\s*(\d{4})",i)
         year = match.group(3); 
         month = convert_Date(match.group(1)); 
@@ -47,21 +49,24 @@ def codedDate(i):
         match = re.search(r"([a-zA-Z]+)\s*,?\s*\b(\d{1,2})?(?:[nN][dD]|[sS][tT]|[rR][dD]|[tT][hH])?\b\s*,?\s*(\d{4})?(\s*.{1,2}\b\s*([a-zA-Z]+)\s*,?\s*\b(\d{1,2})?(?:[nN][dD]|[sS][tT]|[rR][dD]|[tT][hH])?\b\s*,?\s*(\d{4})?)",i)
         month = match.group(1); 
         month2 = match.group(5)
+        day = ""
+        day2 = ""
         if month:
-            month = convert_Date(month); month = "-" + month
+            month = convert_Date(month); 
+            if month:
+                month = "-" + month
         if match.group(2):
             day = match.group(2)
-            if len(day) < 2:
-                day = day.insert(0, '0')
+            day = day.zfill(2)
             day = "-" + day 
         year = match.group(3)
         if month2:
             month2 = convert_Date(month2); 
-            month2 = "-" + month2
+            if month2:
+                month2 = "-" + month2
         if match.group(6):
             day2 = match.group(6)
-            if len(day2) < 2:
-                day2 = day2.insert(0, '0')
+            day2 = day2.zfill(2)
             day2 = "-" + day2 
         year2 = match.group(7)
         if re.search("(spring|summer|fall|winter)",i.lower()):
@@ -121,17 +126,14 @@ def codedDate(i):
     elif re.search(r"([a-zA-Z]+)\s*(\d{1,2})(?:[nN][dD]|[sS][tT]|[rR][dD]|[tT][hH])?\s*,?\s*(\d{4})",i):
         match = re.search(r"([a-zA-Z]+)\s*(\d{1,2})(?:[nN][dD]|[sS][tT]|[rR][dD]|[tT][hH])?\s*,?\s*(\d{4})",i)
         year = match.group(3); day = match.group(2); month = convert_Date(match.group(1)); 
-        if len(day) < 2:
-            day = day.insert(0, '0')
+        day = day.zfill(2)
         return str(year) + "-" + str(month) + "-" + str(day)
     # 9 October 16-18, 2001
     elif re.search(r"([a-zA-Z]+)\s*(\d{1,2})(?:[nN][dD]|[sS][tT]|[rR][dD]|[tT][hH])?\s*(?:.{1,2})\s*\b(\d{1,2})(?:[nN][dD]|[sS][tT]|[rR][dD]|[tT][hH])?,\s*(\d{4})",i) and i not in "hjnkejmnqwnmswdwfsvbkcfqelourpfvzsnfcgpsckwslrewhyozdhdsnafzojxez":
         match = re.search(r"([a-zA-Z]+)\s*(\d{1,2})(?:[nN][dD]|[sS][tT]|[rR][dD]|[tT][hH])?\s*(?:.{1,2})\s*\b(\d{1,2})(?:[nN][dD]|[sS][tT]|[rR][dD]|[tT][hH])?,\s*(\d{4})",i)
         year = match.group(4); day = match.group(2); day2 = match.group(3) ; month = convert_Date(match.group(1))
-        if len(day) < 2:
-            day = day.insert(0, '0')
-        if len(day2) < 2:
-            day2 = day2.insert(0, '0')
+        day = day.zfill(2)
+        day2 = day2.zfill(2)
         return str(year) + "-" + str(month) + "-" + str(day) + "/" + str(year) + "-" + str(month) + "-" + str(day2) 
     # 10 c. 1945-1947
     elif re.search(r"^\s*c.\s*(\d{4})\s*-\s*(\d{4})\\s*$",i):
@@ -188,8 +190,7 @@ def convert_to_xml(csv_file, xml):
         v_dspace_url = str(row[8]).strip() if row[8] else None
         
         
-        # Increase count of record to help identify errors.
-        record += 1
+        
         
         try:
             # Set a flag to determine if every cell is empty, blank, or contains only spaces
@@ -384,6 +385,8 @@ def convert_to_xml(csv_file, xml):
         except BaseException as e:
             print(str(e))
             print(f"Error: Could not process record at Excel line: {record}", flush=True)
+            print(f"{v_c0} {v_title} {v_date} {v_file} {v_series_id}  {v_dspace_url}")
+            print(f"Python Error: {traceback.extract_tb(e.__traceback__)[-1][1]}", flush=True)
             input()
             exit()
 
@@ -419,7 +422,7 @@ filepath = os.getcwd()
 
 fileName = "output_file"
 file_suffix = datetime.datetime.now().strftime("%Y_%m_%d-%H%M_%S_%f")
-fileName = fileName + "-" + file_suffix + ".xml"
+fileName = fileName + "-" + file_suffix + ".txt"
 
 fullpath = os.path.join(filepath, fileName)
 
