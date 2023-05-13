@@ -29,7 +29,8 @@ class TestNewEADXMLCreationScript_python(unittest.TestCase):
 
         for i, (input, expected_output) in enumerate(test_cases):
             with self.subTest(i=i):
-                self.assertEqual(codedDate(input), expected_output)
+                actual_output = codedDate(input)
+                self.assertEqual(actual_output, expected_output, f"For input {input}, expected {expected_output} but got {actual_output}")
 
 if __name__ == '__main__':
     unittest.main()    
