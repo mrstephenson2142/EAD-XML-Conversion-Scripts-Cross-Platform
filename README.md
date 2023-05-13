@@ -11,22 +11,37 @@ The contents of this repository are the intellectual property of Micheal Stephen
 
 # EAD-XML-Conversion-Scripts-Cross-Platform
 
-This repository is based on another repository called [EAD-XML-Conversion-Scripts](https://github.com/RWTTU/EAD-XML-Conversion-Scripts), which was originally written in PowerShell and was limited to use on Windows machines only. The aim of this repository is to provide a cross-platform solution by rewriting the **NewEADXMLCreationScript** in Python.
+This repository is based on another repository called [EAD-XML-Conversion-Scripts](https://github.com/RWTTU/EAD-XML-Conversion-Scripts), which was originally written in PowerShell and was largely limited to windows Machines. The aim of this repository is to provide a cross-platform solution by rewriting the **NewEADXMLCreationScript** in Python.
 
 The Python script has been compiled into an exe file using `pyinstaller`, making it executable on Windows machines without requiring a Python installation. However, the source files can be used on any platform with Python installed. The script can also be run without being compiled into a binary on any system running Python 3.8 or later.
 
-## Installation
+# Requirements
 
-1. Download the latest release from the [releases page](https://github.com/username/EAD-XML-Conversion-Scripts-Python/releases).
+- Tested on Python 3.8
+
+# Installation
+
+1. Download the exe file from the latest release on the [releases page](https://github.com/mrstephenson2142/EAD-XML-Conversion-Scripts-Cross-Platform/releases).
 2. Extract the downloaded zip file to a desired location.
 
-## Usage
+# Usage
 
 1. Double-click `EAD-XML-Conversion-Scripts.exe` to execute the script.
 
-Note: For non-Windows platforms, Python 3.8 or later needs to be installed.
+# Compile the Executable from Source
+
+1.  Navigate to the directory that contains your Python script.  
+`cd /path/to/your/script`
+
+2. Install pyinstaller.  
+`pip install pyinstaller`
+
+3. Create a standalone executable file using pyinstaller.  
+`pyinstaller --onefile your_script_name.py`
+
+4. The executable file will be created in a dist directory in the same location as your script
 
 
-## License
 
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+
+
