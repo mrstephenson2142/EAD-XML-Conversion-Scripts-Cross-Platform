@@ -1,13 +1,7 @@
 # EAD-XML-Conversion-Scripts-Cross-Platform
 
 # Purpose
-This guide documents the creation of encoding new finding aids using the EAD XML Conversion Script at the SWC/SCL.
-
-# Rights Statement
-The contents of this repository are the intellectual property of Micheal Stephenson, Sarah Stephenson, and the Southwest Collection/Special Collections Library. 
-
-
-
+This guide documents the creation of encoding new finding aids using the EAD XML Conversion Script at the Southwest Collection (SWC)/Special Collections Library(SCL).
 
 # EAD-XML-Conversion-Scripts-Cross-Platform
 
