@@ -15,10 +15,6 @@ This repository is based on another repository called [EAD-XML-Conversion-Script
 
 The Python script has been compiled into an exe file using `pyinstaller`, making it executable on Windows machines without requiring a Python installation. However, the source files can be used on any platform with Python installed. The script can also be run without being compiled into a binary on any system running Python 3.8 or later.
 
-# Requirements
-
-- Tested on Python 3.8
-
 # Installation
 
 1. Download the exe file from the latest release on the [releases page](https://github.com/mrstephenson2142/EAD-XML-Conversion-Scripts-Cross-Platform/releases).
@@ -29,6 +25,12 @@ The Python script has been compiled into an exe file using `pyinstaller`, making
 1. Double-click `EAD-XML-Conversion-Scripts.exe` to execute the script.
 
 # Compile the Executable from Source
+
+## Requirements
+
+- Tested on Python 3.8
+
+## Steps
 
 1.  Navigate to the directory that contains your Python script.  
 `cd /path/to/your/script`
