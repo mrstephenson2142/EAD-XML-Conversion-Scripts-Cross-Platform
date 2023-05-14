@@ -456,7 +456,7 @@ if __name__ == "__main__":
 
 
     # Fix Undated 
-    undatedDaterange = 'undated="' + str(min(years)) + '/' + str(max(years)) +'"'
+    undatedDaterange = 'normal="' + str(min(years)) + '/' + str(max(years)) +'"'
 
     ## Load the txt file
     with open(fullpath, 'r') as f:
