@@ -33,7 +33,7 @@ The Python script has been compiled into an exe file using `pyinstaller`, making
 `pip install pyinstaller`
 
 3. Create a standalone executable file using pyinstaller.  
-`pyinstaller --onefile --name filename your_script_name.py`
+`pyinstaller --onefile --name outputfilename your_script_name.py`
 
 4. The executable file will be created in a dist directory in the same location as your script
 
