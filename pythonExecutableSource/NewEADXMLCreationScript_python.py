@@ -192,7 +192,7 @@ def convert_to_xml(csv_file, xml):
         v_date = str(row[6]).strip() if row[6] else None
         if v_date: 
             v_codedDate = codedDate(v_date)
-        v_dspace_url = str(row[8]).strip() if row[8] else None
+        v_dspace_url = str(row[7]).strip() if row[7] else None
         
         # Add years to global list
         if row[6]:
