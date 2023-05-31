@@ -359,7 +359,7 @@ def convert_to_xml(csv_file, xml):
             else:
                 # Set 'unittitle' text
                 unittitle_text = v_title if v_title else ""
-                unittitle.appendChild(xml.createTextNode(unittitle_text))
+                unittitle.appendChild(xml.createTextNode(unittitle_text + " "))
 
                 # Check if 'unitdate' exists
                 if v_date:
