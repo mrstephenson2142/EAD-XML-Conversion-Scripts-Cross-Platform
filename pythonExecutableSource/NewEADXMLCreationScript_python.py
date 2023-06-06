@@ -316,7 +316,7 @@ def convert_to_xml(csv_file, xml):
                 file.appendChild(xml.createTextNode(file_text))
                 # Add Attribute
                 file.setAttribute("type", "folder")  
-                did.insertBefore(file, box)
+                did.appendChild(file)
                 
             # If not series or subseries populate empty value if no value given. 
             elif v_attribute not in ['subseries', 'series']:
@@ -326,7 +326,7 @@ def convert_to_xml(csv_file, xml):
                 file.appendChild(xml.createTextNode(""))
                 # Add Attribute
                 file.setAttribute("type", "folder")  
-                did.insertBefore(file, box)
+                did.appendChild(file)
                 
             # Check if the 'Title' header exists
             if v_title:
