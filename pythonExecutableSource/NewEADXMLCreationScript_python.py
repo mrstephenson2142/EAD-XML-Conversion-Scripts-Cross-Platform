@@ -294,7 +294,7 @@ def convert_to_xml(csv_file, xml):
                 box_text = str(v_box) if v_box else ""
                 box.appendChild(xml.createTextNode(box_text))
                 # Add Attribute
-                box.setAttribute("type", "box") 
+                box.setAttribute("type", "Box") 
                 did.appendChild(box) 
                 
             # If not series or subseries populate empty value if no value given. 
@@ -304,7 +304,7 @@ def convert_to_xml(csv_file, xml):
                 # Add Container Inner Text
                 box.appendChild(xml.createTextNode(""))
                 # Add Attribute
-                box.setAttribute("type", "box") 
+                box.setAttribute("type", "Box") 
                 did.appendChild(box)
                 
             # Check if the 'File' header exists
@@ -315,7 +315,7 @@ def convert_to_xml(csv_file, xml):
                 file_text = str(v_file) if v_file else ""
                 file.appendChild(xml.createTextNode(file_text))
                 # Add Attribute
-                file.setAttribute("type", "folder")  
+                file.setAttribute("type", "Folder")  
                 did.appendChild(file)
                 
             # If not series or subseries populate empty value if no value given. 
@@ -325,7 +325,7 @@ def convert_to_xml(csv_file, xml):
                 # Add Container Inner Text
                 file.appendChild(xml.createTextNode(""))
                 # Add Attribute
-                file.setAttribute("type", "folder")  
+                file.setAttribute("type", "Folder")  
                 did.appendChild(file)
                 
             # Check if the 'Title' header exists
