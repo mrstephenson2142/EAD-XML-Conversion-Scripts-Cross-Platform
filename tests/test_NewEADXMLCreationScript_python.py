@@ -10,6 +10,7 @@ class TestNewEADXMLCreationScript_python(unittest.TestCase):
             ('January 24, 2014 - February 24, 2018', '2014-01-24/2018-02-24'),
             ('c 1790s', '1790/1799'),
             ('1790s', '1790/1799'),
+            ('September 5, 1974 - December 31, 2000 and undated', '1974-09-05/2000-12-31'),
             ('1970s-1980s', '1970/1989'),
             ('October, 2001', '2001-10'),
             ('1978-1984', '1978/1984'),
