@@ -34,7 +34,8 @@ def endOfDecade(year):
 def codedDate(i):
     
     # reaplce "and undated"
-    pattern = r'\s*and\s*undated\s*'
+    pattern = re.compile(r'\s*and\s*undated\s*', re.IGNORECASE)
+
     # replace matching pattern with a single space
     i = re.sub(pattern, ' ', i)
     # trim leading and trailing spaces

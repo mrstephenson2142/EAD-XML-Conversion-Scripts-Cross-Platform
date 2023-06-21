@@ -5,6 +5,7 @@ class TestNewEADXMLCreationScript_python(unittest.TestCase):
  def test_codedDate(self):
         test_cases = [
             ('October 16-18, 2001', '2001-10-16/2001-10-18'),
+            ('1958-1986 and Undated', '1958/1986'),
             ('1958-1986 and undated', '1958/1986'),
             ('October-December, 2001', '2001-10/2001-12'),
             ('January 24, 2014 - February 24, 2018', '2014-01-24/2018-02-24'),
