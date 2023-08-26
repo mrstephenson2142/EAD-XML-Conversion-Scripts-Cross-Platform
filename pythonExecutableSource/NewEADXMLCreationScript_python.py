@@ -13,18 +13,19 @@ import sys
 # Functions 
 
 def convert_Date(inDate):
-    if inDate.startswith("Jan"): return "01"
-    if inDate.startswith("Feb"): return "02"
-    if inDate.startswith("Mar"): return "03"
-    if inDate.startswith("Apr"): return "04"
-    if inDate.startswith("May"): return "05"
-    if inDate.startswith("Jun"): return "06"
-    if inDate.startswith("Jul"): return "07"
-    if inDate.startswith("Aug"): return "08"
-    if inDate.startswith("Sep"): return "09"
-    if inDate.startswith("Oct"): return "10"
-    if inDate.startswith("Nov"): return "11"
-    if inDate.startswith("Dec"): return "12"
+    inDate = inDate.lower()
+    if inDate.startswith("jan"): return "01"
+    if inDate.startswith("feb"): return "02"
+    if inDate.startswith("mar"): return "03"
+    if inDate.startswith("apr"): return "04"
+    if inDate.startswith("may"): return "05"
+    if inDate.startswith("jun"): return "06"
+    if inDate.startswith("jul"): return "07"
+    if inDate.startswith("aug"): return "08"
+    if inDate.startswith("sep"): return "09"
+    if inDate.startswith("oct"): return "10"
+    if inDate.startswith("nov"): return "11"
+    if inDate.startswith("dec"): return "12"
 
 def endOfDecade(year):
     year = int(year)
