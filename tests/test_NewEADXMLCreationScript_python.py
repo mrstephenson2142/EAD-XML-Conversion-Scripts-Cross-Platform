@@ -26,6 +26,9 @@ class TestNewEADXMLCreationScript_python(unittest.TestCase):
             ('circa 1945', '1945'),
             ('c. 1946', '1946'),
             ('1942, 1045, 1945-1947', '1045/1947'),
+            ('September 24, 1917 and September 25, 1917', '1917-09-24/1917-09-25'),
+            ('June 1991 and September 1992', '1991-06/1992-09'),
+            ('1977-November 1978', '1977/1978-11'),
             ('undated', 'REPLACEMEASUNDATED'),
         ]
 
