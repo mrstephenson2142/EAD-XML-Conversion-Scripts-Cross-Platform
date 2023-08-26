@@ -169,49 +169,50 @@ def codedDate(i):
 ## Main Loop Function
 
 def convert_to_xml(csv_file, xml):
-    record = 1
-    series_id = 1
-    prev_c_num = 0
-    element_stack = []
-    global years
-    global warnMsg 
-    
-    # Start Message
-    #print(f"Starting the script...", flush=True)
-    print(f"Starting the script....")
-    
-    
-    
-    for row in csv_file.iter_rows(min_row=2, values_only=True):
+    try:
+        record = 1
+        series_id = 1
+        prev_c_num = 0
+        element_stack = []
+        global years
+        global warnMsg 
         
-        # Increase count of record to help identify errors.
-        record += 1
-
-        # Skip if row is empty
-        if not any(row):
-            continue
+        # Start Message
+        #print(f"Starting the script...", flush=True)
+        print(f"Starting the script....")
         
-        # Set Vars
-        v_series_id = str(row[0]).strip() if row[0] else None
-        v_attribute = str(row[1]).strip() if row[1] else None
-        v_c0 = int(row[2]) if row[2] else None
-        v_box = int(row[3]) if row[3] else None
-        v_file = int(row[4]) if row[4] else None
-        v_title = str(row[5]).strip() if row[5] else None
-        v_date = str(row[6]).strip() if row[6] else None
-        if v_date: 
-            v_codedDate = codedDate(v_date)
-        v_dspace_url = str(row[7]).strip() if row[7] else None
         
-        # Add years to global list
-        if row[6]:
-            for match in re.findall(r'\b\d{4}\b', v_codedDate):
-                if match != '0000':
-                    years.append(match)
+        
+        for row in csv_file.iter_rows(min_row=2, values_only=True):
             
+            # Increase count of record to help identify errors.
+            record += 1
+
+            # Skip if row is empty
+            if not any(row):
+                continue
+            
+            # Set Vars
+            v_series_id = str(row[0]).strip() if row[0] else None
+            v_attribute = str(row[1]).strip() if row[1] else None
+            v_c0 = int(row[2]) if row[2] else None
+            v_box = int(row[3]) if row[3] else None
+            v_file = int(row[4]) if row[4] else None
+            v_title = str(row[5]).strip() if row[5] else None
+            v_date = str(row[6]).strip() if row[6] else None
+            if v_date: 
+                v_codedDate = codedDate(v_date)
+            v_dspace_url = str(row[7]).strip() if row[7] else None
+            
+            # Add years to global list
+            if row[6]:
+                for match in re.findall(r'\b\d{4}\b', v_codedDate):
+                    if match != '0000':
+                        years.append(match)
+                
         
         
-        try:
+        
             # Set a flag to determine if every cell is empty, blank, or contains only spaces
             all_cells_empty = True
                         
@@ -413,13 +414,13 @@ def convert_to_xml(csv_file, xml):
             # Set the previous c# to the current to use in comparison in the next iteration
             prev_c_num = v_c0
         
-        except BaseException as e:
-            print(str(e))
-            print(f"Error: Could not process record at Excel line: {record}", flush=True)
-            print(f"{v_c0} {v_title} {v_date} {v_file} {v_series_id}  {v_dspace_url}")
-            print(f"Python Error: {traceback.extract_tb(e.__traceback__)[-1][1]}", flush=True)
-            input()
-            exit()
+    except BaseException as e:
+        print(str(e))
+        print(f"Error: Could not process record at Excel line: {record}", flush=True)
+        print(f"{v_c0} {v_title} {v_date} {v_file} {v_series_id}  {v_dspace_url}")
+        print(f"Python Error: {traceback.extract_tb(e.__traceback__)[-1][1]}", flush=True)
+        input()
+        exit()
 
 
 if __name__ == "__main__":
