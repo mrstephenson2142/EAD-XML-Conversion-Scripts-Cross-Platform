@@ -12,7 +12,6 @@ class TestNewEADXMLCreationScript_python(unittest.TestCase):
             ('c 1790s', '1790/1799'),
             ('1790s', '1790/1799'),
             ('September 5, 1974 - December 31, 2000 and undated', '1974-09-05/2000-12-31'),
-            ('September 24, 1917 and September 25, 1917', '1917-09-24/1917-09-25'),
             ('1970s-1980s', '1970/1989'),
             ('October, 2001', '2001-10'),
             ('1978-1984', '1978/1984'),
@@ -27,6 +26,9 @@ class TestNewEADXMLCreationScript_python(unittest.TestCase):
             ('circa 1945', '1945'),
             ('c. 1946', '1946'),
             ('1942, 1045, 1945-1947', '1045/1947'),
+            ('September 24, 1917 and September 25, 1917', '1917-09-24/1917-09-25'),
+            ('June 1991 and September 1992', '1991-06/1992-09'),
+            ('1977-November 1978', '1977/1978-11'),
             ('undated', 'REPLACEMEASUNDATED'),
         ]
 

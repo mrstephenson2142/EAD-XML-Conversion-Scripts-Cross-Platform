@@ -43,7 +43,7 @@ def codedDate(i):
 
 
     # Undated 
-    if i == 'undated':
+    if i.lower() == 'undated':
         return 'REPLACEMEASUNDATED'
     
     # 1 October-December, 2001
@@ -55,8 +55,8 @@ def codedDate(i):
         month2 = convert_Date(match.group(2))
         return str(year) + "-" + str(month) + "/" + str(year) + "-" + str(month2)
     # 2 January 24, 2014 - February 24, 2018 and a few variations Done
-    elif re.search(r"([a-zA-Z]+)\s*,?\s*\b(\d{1,2})?(?:[nN][dD]|[sS][tT]|[rR][dD]|[tT][hH])?\b\s*,?\s*(\d{4})?(\s*.{1,2}\b\s*([a-zA-Z]+)\s*,?\s*\b(\d{1,2})?(?:[nN][dD]|[sS][tT]|[rR][dD]|[tT][hH])?\b\s*,?\s*(\d{4})?)",i) and not re.search("undated",i):
-        match = re.search(r"([a-zA-Z]+)\s*,?\s*\b(\d{1,2})?(?:[nN][dD]|[sS][tT]|[rR][dD]|[tT][hH])?\b\s*,?\s*(\d{4})?(\s*.{1,2}\b\s*([a-zA-Z]+)\s*,?\s*\b(\d{1,2})?(?:[nN][dD]|[sS][tT]|[rR][dD]|[tT][hH])?\b\s*,?\s*(\d{4})?)",i)
+    elif re.search(r"(?i)([a-z]+)\s*,?\s*\b(\d{1,2})?(?:nd|st|rd|th)?\b\s*,?\s*(\d{4})?\s*(?:.{1,2}|and)\b\s*(([a-z]+)\s*,?\s*\b(\d{1,2})?(?:nd|st|rd|th)?\b\s*,?\s*(\d{4})?)",i) and not re.search("undated",i):
+        match = re.search(r"(?i)([a-z]+)\s*,?\s*\b(\d{1,2})?(?:nd|st|rd|th)?\b\s*,?\s*(\d{4})?\s*(?:.{1,2}|and)\b\s*(([a-z]+)\s*,?\s*\b(\d{1,2})?(?:nd|st|rd|th)?\b\s*,?\s*(\d{4})?)",i)
         month = match.group(1); 
         month2 = match.group(5)
         day = ""
@@ -155,6 +155,14 @@ def codedDate(i):
         match = re.search(r"^\s*(?:c\.|[cC][iI][Rr][cC][aA].?)?\s*(\d{4})$", i)
         year = match.group(1)
         return str(year)
+    # 12 1977-November 1978
+    elif re.search(r"(?i)(^\d{4})\s*-\s*([a-z]+)\s*(\d{4})",i):
+        match = re.search(r"(?i)(\d{4})\s*-\s*([a-z]+)\s*(\d{4})",i)
+        year = match.group(1); 
+        month = convert_Date(match.group(2)); 
+        year2 = match.group(3)
+        return str(year) + "/" + str(year2) + "-" + str(month)
+
     # 13 1942, 1045, 1945-1947
     elif re.search(r"(\d.*\d)", i):
         match = re.search(r"(\d.*\d)", i)
