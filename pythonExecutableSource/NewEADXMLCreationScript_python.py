@@ -429,97 +429,105 @@ def convert_to_xml(csv_file, xml):
         print(f"{v_c0} {v_title} {v_date} {v_file} {v_series_id}  {v_dspace_url}")
         print(f"Python Error: {traceback.extract_tb(e.__traceback__)[-1][1]}", flush=True)
         input()
-        exit()
+        sys.exit(1)
 
 
 if __name__ == "__main__":
+    try: 
+        # Vars
+        warnMsg = None
+        years = []
 
-    # Vars
-    warnMsg = None
-    years = []
+        # Set the current directory as the starting location for the file picker
+        root = tk.Tk()
+        root.withdraw()
+        excel_file_path = filedialog.askopenfilename(initialdir=os.getcwd(), filetypes=[("Excel Files", "*.xlsx")])
 
-    # Set the current directory as the starting location for the file picker
-    root = tk.Tk()
-    root.withdraw()
-    excel_file_path = filedialog.askopenfilename(initialdir=os.getcwd(), filetypes=[("Excel Files", "*.xlsx")])
+        # Load the workbook
+        workbook = openpyxl.load_workbook(excel_file_path)
 
-    # Load the workbook
-    workbook = openpyxl.load_workbook(excel_file_path)
+        # Get the desired sheet (or the first sheet if "template" doesn't exist)
+        if "Template" in workbook.sheetnames:
+            sheet = workbook["Template"]
+        else:
+            sheet = workbook.active
 
-    # Get the desired sheet (or the first sheet if "template" doesn't exist)
-    if "Template" in workbook.sheetnames:
-        sheet = workbook["Template"]
-    else:
-        sheet = workbook.active
+        # Create the XML document
+        # Example of usage
+        xml_doc = minidom.Document()
+        rootElement = xml_doc.createElement("RootElement")
+        xml_doc.appendChild(rootElement)
 
-    # Create the XML document
-    # Example of usage
-    xml_doc = minidom.Document()
-    rootElement = xml_doc.createElement("RootElement")
-    xml_doc.appendChild(rootElement)
+        # Convert Excel to XML 
+        convert_to_xml(sheet, xml_doc)
 
-    # Convert Excel to XML 
-    convert_to_xml(sheet, xml_doc)
+        # Save the XML document
+        filepath = os.getcwd()
 
-    # Save the XML document
-    filepath = os.getcwd()
+        fileName = "output_file"
+        file_suffix = datetime.datetime.now().strftime("%Y_%m_%d-%H%M_%S_%f")
+        fileName = fileName + "-" + file_suffix + ".txt"
 
-    fileName = "output_file"
-    file_suffix = datetime.datetime.now().strftime("%Y_%m_%d-%H%M_%S_%f")
-    fileName = fileName + "-" + file_suffix + ".txt"
+        fullpath = os.path.join(filepath, fileName)
 
-    fullpath = os.path.join(filepath, fileName)
-
-    with open(fullpath, 'w') as f:
-        f.write(xml_doc.toprettyxml())   
-
-
-    # Fix Undated 
-    if years: 
-        undatedDaterange = 'normal="' + str(min(years)) + '/' + str(max(years)) +'"'
-    else:
-        undatedDaterange = 'normal="0000/0000"'
-
-    ## Load the txt file
-    with open(fullpath, 'r') as f:
-        # Read the file into a list of lines
-        lines = f.readlines()
-
-    # Loop through the lines and replace any occurrences of 'undated="0000/0000"' with 'undated'
-    for i, line in enumerate(lines):
-        lines[i] = line.replace('normal="REPLACEMEASUNDATED"', undatedDaterange)
-
-    # Write the modified lines back to the file
-    with open(fullpath, 'w') as f:
-        f.writelines(lines)
+        with open(fullpath, 'w') as f:
+            f.write(xml_doc.toprettyxml())   
 
 
-    # Stop message
-    #print(f"Script completed. Results written to: {fullpath}", end="", flush=True) 
-    print(f"Script completed. Results written to: {fullpath}")
+        # Fix Undated 
+        if years: 
+            undatedDaterange = 'normal="' + str(min(years)) + '/' + str(max(years)) +'"'
+        else:
+            undatedDaterange = 'normal="0000/0000"'
+
+        ## Load the txt file
+        with open(fullpath, 'r') as f:
+            # Read the file into a list of lines
+            lines = f.readlines()
+
+        # Loop through the lines and replace any occurrences of 'undated="0000/0000"' with 'undated'
+        for i, line in enumerate(lines):
+            lines[i] = line.replace('normal="REPLACEMEASUNDATED"', undatedDaterange)
+
+        # Write the modified lines back to the file
+        with open(fullpath, 'w') as f:
+            f.writelines(lines)
+
+
+        # Stop message
+        #print(f"Script completed. Results written to: {fullpath}", end="", flush=True) 
+        print(f"Script completed. Results written to: {fullpath}")
 
 
 
-    # Pause at the end if warnings happened during run. 
-    if warnMsg:
-        print("Warnings occoured during run.")
-        input("Press 'Enter' to exit and open the output file...")
+        # Pause at the end if warnings happened during run. 
+        if warnMsg:
+            print("Warnings occoured during run.")
+            input("Press 'Enter' to exit and open the output file...")
 
 
-    # Open saved xml file remove the top and bottom two lines, then save it again.
+        # Open saved xml file remove the top and bottom two lines, then save it again.
 
-    # set the file name and open the file
-    with open(fullpath, "r") as file:
-        # read the content of the file
-        content = file.readlines()
+        # set the file name and open the file
+        with open(fullpath, "r") as file:
+            # read the content of the file
+            content = file.readlines()
 
-    # remove the top two lines and bottom two lines of the file
-    content = content[2:-1]
+        # remove the top two lines and bottom two lines of the file
+        content = content[2:-1]
 
-    # save the modified content to the same file
-    with open(fullpath, "w") as file:
-        file.writelines(content)
+        # save the modified content to the same file
+        with open(fullpath, "w") as file:
+            file.writelines(content)
 
 
-    # Open the file 
-    os.startfile(fullpath)
+        # Open the file 
+        os.startfile(fullpath)
+
+    except BaseException as e:
+        print(str(e))
+        print(f"Python Error: {traceback.extract_tb(e.__traceback__)[-1][1]}", flush=True)
+        input("Press Enter to continue...")
+        sys.exit(1)
+
+        
